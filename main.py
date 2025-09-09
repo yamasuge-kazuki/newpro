@@ -208,7 +208,7 @@ def GPS_thread():  # GPSモジュールを読み、GPSオブジェクトを更�
     global lng
     global gps_detect
 
-    s = serial.Serial("/dev/serial0", 115200)
+    s = serial.Serial("/dev/serial0", 9600)
     s.readline()  # 最初の1行は中途半端なデーターが読めることがあるので、捨てる
     gps = MicropyGPS(9, "dd")
 
