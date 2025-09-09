@@ -228,6 +228,7 @@ def GPS_thread():  # GPSモジュールを読み、GPSオブジェクトを更�
             gps_detect = 1
         elif lat == 0.0:
             gps_detect = 0
+            print("None GNSS value")
         # print(lat)
         # print(lng)
 
