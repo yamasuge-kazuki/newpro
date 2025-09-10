@@ -6,6 +6,7 @@ import datetime
 import csv
 import os
 import RPi.GPIO as GPIO
+from pathlib import Path
 
 # import wiringpi as pi
 import BNO055
@@ -59,8 +60,7 @@ stuck_GPS_Flag = 0  # judge the stuck by GPS : no obstacle distance_Flag = 0, if
 
 bmx = BNO055.BNO055()
 nowTime = datetime.datetime.now()
-fileName = "./log/testlog_" + nowTime.strftime("%Y-%m%d-%H%M%S") + ".csv"
-
+fileName = Path("log") / ("testlog_" + nowTime.strftime("%Y-%m%d-%H%M%S") + ".csv")
 
 def main():
     global phase
@@ -93,6 +93,7 @@ def currentMilliTime():
 
 def Setup():
     bmx.setUp()
+    fileName.parent.mkdir(parents=True, exist_ok=True)
     with open(fileName, "a") as f:
         writer = csv.writer(f)
         writer.writerow(
