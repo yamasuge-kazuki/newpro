@@ -77,14 +77,20 @@ def main():
         try:
             start = time.time()
             print("phase3 : GPS start")
-            print("angle: ", angle)
-            print("azimuth", azimuth)
             if distance < 5.0:
+                GPIO.output(AIN1,LOW)
+                GPIO.output(AIN2,LOW)
+                GPIO.output(BIN1,LOW)
+                GPIO.output(BIN2,LOW)
                 print("goal!")
                 direction=360.0
                 exit()
         except KeyboardInterrupt:
             direction=360.0
+            GPIO.output(AIN1,LOW)
+            GPIO.output(AIN2,LOW)
+            GPIO.output(BIN1,LOW)
+            GPIO.output(BIN2,LOW)
             exit()
             
 def currentMilliTime():
@@ -241,6 +247,10 @@ def setData_thread():
         set_direction()
         calcdistance()
         end=time.time()
+        print(f'lat:{lat}')
+        print(f'lng:{lng}')
+        print(f'azimuth:{azimuth}')
+        print(f'angle:{angle}')
         with open(fileName, "a", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(
@@ -311,7 +321,7 @@ def moveMotor_thread():
             GPIO.output(BIN2,LOW) 
 
         elif direction == -360.0:  #forward
-            M_pwmA.ChangeDutyCycle(85)
+            M_pwmA.ChangeDutyCycle(100)
             M_pwmB.ChangeDutyCycle(100)
             GPIO.output(AIN1,HIGH)
             GPIO.output(AIN2,LOW)
@@ -354,8 +364,8 @@ def set_direction():  # -180<direction<180  #rover move to right while direction
     direction %= 360
     if (direction > 180):
         direction -= 360
-        if abs(direction) < 5.0:
-            direction = -360
+    if abs(direction) < 5.0:
+        direction = -360
 
 if __name__ == "__main__":
     main()
